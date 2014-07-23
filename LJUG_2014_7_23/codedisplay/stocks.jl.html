@@ -113,11 +113,19 @@
 18
 19
 20
-21</pre></div></td><td class="code"><div class="code"><pre><span class="k">using</span> <span class="n">DataFrames</span>
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="code"><pre><span class="k">using</span> <span class="n">DataFrames</span>
 <span class="k">using</span> <span class="n">HDF5</span><span class="p">,</span> <span class="n">JLD</span>
 <span class="k">using</span> <span class="n">Datetime</span>
 <span class="k">using</span> <span class="n">Bokeh</span>
-<span class="n">autoopen</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
 <span class="p">@</span><span class="nb">load</span> <span class="s">&quot;stock_data.jld&quot;</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">date</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">stockdata</span><span class="p">[:</span><span class="n">AAPL</span><span class="p">][:</span><span class="n">Date</span><span class="p">]))</span>
@@ -131,9 +139,19 @@
 <span class="n">mat</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[:</span><span class="n">AAPL</span><span class="p">]</span> <span class="n">df</span><span class="p">[:</span><span class="n">GOOG</span><span class="p">]</span> <span class="n">df</span><span class="p">[:</span><span class="n">FB</span><span class="p">]</span> <span class="n">df</span><span class="p">[:</span><span class="n">MSFT</span><span class="p">]]</span>
 
 <span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">days</span><span class="p">],</span> <span class="n">mat</span><span class="p">;</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;stocks&quot;</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">showplot</span><span class="p">(</span><span class="s">&quot;time_stocks.html&quot;</span><span class="p">)</span>
 
 <span class="n">println</span><span class="p">(</span><span class="n">Bokeh</span><span class="o">.</span><span class="n">DEFAULT_GLYPHS_STR</span><span class="p">)</span>
 <span class="n">println</span><span class="p">([:</span><span class="n">AAPL</span><span class="p">,</span> <span class="p">:</span><span class="n">GOOG</span><span class="p">,</span> <span class="p">:</span><span class="n">FB</span><span class="p">,</span> <span class="p">:</span><span class="n">MSFT</span><span class="p">])</span>
+
+<span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">AAPL</span><span class="p">],</span> <span class="n">df</span><span class="p">[:</span><span class="n">GOOG</span><span class="p">],</span> <span class="s">&quot;bo&quot;</span><span class="p">)</span>
+<span class="n">hold</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">AAPL</span><span class="p">],</span> <span class="n">df</span><span class="p">[:</span><span class="n">FB</span><span class="p">],</span> <span class="s">&quot;ro&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">AAPL</span><span class="p">],</span> <span class="n">df</span><span class="p">[:</span><span class="n">MSFT</span><span class="p">],</span> <span class="s">&quot;go&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">GOOG</span><span class="p">],</span> <span class="n">df</span><span class="p">[:</span><span class="n">FB</span><span class="p">],</span> <span class="s">&quot;yo&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">GOOG</span><span class="p">],</span> <span class="n">df</span><span class="p">[:</span><span class="n">MSFT</span><span class="p">],</span> <span class="s">&quot;ko&quot;</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">FB</span><span class="p">],</span> <span class="n">df</span><span class="p">[:</span><span class="n">MSFT</span><span class="p">],</span> <span class="s">&quot;co&quot;</span><span class="p">;</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;GOOG vs. AAPL, FB, MSFT&quot;</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">showplot</span><span class="p">(</span><span class="s">&quot;stock_correlation.html&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
