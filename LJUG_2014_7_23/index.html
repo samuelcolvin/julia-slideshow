@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="reveal.js/css/reveal.min.css">
+		<link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'reveal.js/css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+    <link rel="stylesheet" href="custom.css">
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+<div class="slides">
+    <section class="" data-id="d718d852a0dc84833d73747fd6d9b835">
+        <h1>Julia Packages</h1>
+<div>What's available and how to create</div>
+<div>Samuel Colvin</div>
+<div>
+<img src="https://s3.amazonaws.com/media-p.slid.es/uploads/samuelcolvin/images/528614/julia_logo_transp.png" style="width: 539.9874140220263px; height: 365.3333330154419px; max-height: none; max-width: none;">
+</div>
+    </section>
+    <section class="" data-id="95c45376626500839985924700f8030f">
+        <h2>Agenda</h2>
+<div style="text-align: left; ">
+        <ul>
+<li>Packages "all stars" list</li>
+<li>Summary of what some of the most important packages can do.</li>
+</ul>
+    </div>
+</section>
+<section class="" data-id="532944a206b6eae045e7c4dfc2618838">
+    <h2>packages</h2>
+<div style="text-align: left; ">
+<div>
+<ul>
+<li>Julia comes with a build in package manager which is accessed from inside Julia.</li>
+<li>Currently 377 packages available.</li>
+<li>Julia very popular with the optimisation crowd: lots of mature packages in that area.</li>
+</ul>
+<br>
+</div>
+</div>
+
+
+</section>
+    <section class="" data-id="ab03089a0d74a23a1e24ebd320a285c4">
+<h2>Most Popular</h2>
+<div style="text-align: left; ">
+Most Popular Packages by github stars:
+<pre>1. IJulia:              401 stars (ipython notebook support)
+2. Gadfly:              349 stars (plotting, ggplot style)
+3. DataFrames:          137 stars (pandas or R data structures)
+4. PyCall:              105 stars (call python from Julia)
+5. JuMP:                79  stars (external mathematical programming)
+6. GeneticAlgorithms:   70  stars (Genetic Algorithms)
+7. Optim:               67  stars (Native optimisation algorithms)
+8. Morsel:              59  stars (micro web framework)
+9. GLM:                 56  stars (generalised linear models)
+10.Winston:             54  stars (plotting, matlab style (ish))
+11.Distributions:       51  stars (probability distributions et. al.)
+12.Graphs:              44  stars (graph (network) functionality)
+13.MCMC:                38  stars (bayesian statistical models)
+14.OpenCL:              36  stars (graphics: OpenCL 1.2)
+15.StatsBase:           35  stars (basic support for statistics)
+</pre>
+</div>
+<br></section><section class="" data-id="ddc7d69a1ed54ee35555bdbf091d5f05"><h2>Most Notable</h2>
+<div style="text-align: left; "><ul>
+<li>
+<b>HDF5: </b>support of reading and writing HDF5 files, comes with a "jld" file format for persistence of julia objects.</li>
+<li>
+<b>Requests: </b>simple but effective library for making http requests.</li>
+<li><br></li>
+</ul></div></section><section class="" data-id="fce4d855a1bae2b708b99726a890cdcc"><h2>Title</h2>
+<div style="text-align: left; ">
+    <iframe width="600" height="400"
+    src="http://codeshow.herokuapp.com/show/150/default/https://gist.github.com/samuelcolvin/9afa1f431b06224ce823/raw/cb306b91f4d26b8649d43e63b5c2067d0f73f393/py_vs_jl.py">
+</iframe>
+</div>
+
+</section></div>
+
+
+
+		</div>
+
+		<script src="reveal.js/lib/js/head.min.js"></script>
+		<script src="reveal.js/js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: 'serif',// Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
