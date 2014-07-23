@@ -56,8 +56,13 @@
 <script type="text/template">
 ## Agenda
 
-* Popular and Usful packages.
-* Demo of what some of them can do.
+* Popular and Usful packages
+* Demo of
+  * IJulia
+  * DataFrames with Request, HDF5, Bokeh
+* Creating Packages
+* Calling c code from Julia and including it in packages
+
 
 </script>
 </section>
@@ -149,9 +154,9 @@
     <section>
     <h3>DataFrames &amp; Bokeh</h3>
       <div>
-          <iframe width="900" height="550"
-          src="demo/bokeh_plot.html">
-      </iframe>
+        <iframe width="900" height="550"
+        src="demo/bokeh_plot.html">
+        </iframe>
       <p>AAPL: blue, GOOG: red, FB: green, MSFT: black</p>
       </div>
     </section>
@@ -203,9 +208,9 @@
 │       ├── METADATA
 ...
 │       └── JellyFish
-│           ├── deps
 │           ├── .git
 │           ├── .travis.yml
+│           ├── deps
 │           │   ├── build.jl
 │           │   ├── cjellyfish
 │           │   │   ├── damerau_levenshtein.c
@@ -276,9 +281,8 @@ Total 11 (delta 0), reused 0 (delta 0)
 To git@github.com:samuelcolvin/TestPac.jl.git
  * [new branch]      master -> master
 Branch master set up to track remote branch master from origin.</pre>
-      </div>
       <p>This is a good point to setup TravisCI, just click on the svg in README.md in GitHub.</p>
-      <br>
+      </div>
   </section>
 
   <section>
@@ -381,6 +385,102 @@ To git@github.com:samuelcolvin/METADATA.jl.git
 
 </section>
 
+<section>
+
+  <section>
+  <h3>Calling c code - a comparison</h3>
+  <div style="text-align: left; ">
+
+  <p>JellyFish is a Python string comparison libary with "cutting edge" string comparison functions like the Jaro-Winkler Distance.</p>
+
+  <p>It lets you do cool things like this:</p>
+
+  <iframe width="1000" height="215"
+  src="http://codeshow.herokuapp.com/show/120/tango/https://github.com/samuelcolvin/julia-slideshow/raw/master/LJUG_2014_7_23/demo/jelly_fish.jl">
+  </iframe>
+
+  <p>Note this is Julia - the c from JellyFish can easily be imported into Julia.</p>
+  </div>
+  </section>
+
+  <section>
+  <h3>JellyFish Python</h3>
+  <div style="text-align: left; ">
+  <p><a href="https://github.com/sunlightlabs/jellyfish">https://github.com/sunlightlabs/jellyfish</a>
+  <p>The guts of JellyFish are written in c, however the python module requires 414 lines of "pythonish" c (and a header file) to allow the module to be imported in to python.</p>
+  </div>
+  </section>
+
+  <section>
+  <h3>JellyFish in Julia</h3>
+  <div style="text-align: left; ">
+  <p>In Julia however we have <strong>none</strong> of that. Just a single Julia file importing the functions.</p>
+  <p>See the source: <a href="https://github.com/samuelcolvin/JellyFish.jl/blob/master/src/JellyFish.jl">JellyFish.jl</a></p>
+  <iframe width="1200" height="350"
+  src="http://codeshow.herokuapp.com/show/120/tango/https://github.com/samuelcolvin/JellyFish.jl/raw/master/src/JellyFish.jl">
+  </iframe>
+  </div>
+  </section>
+
+  <section data-markdown>
+  <script type="text/template">
+  ### Compiling Binary Dependencies for Packages
+
+  * JellyFish.jl obviously contains c code which has to be compiled at install time.
+  * Luckily Julia and the BinDeps library make this very easy.
+  * Simply add "BinDeps" to REQURE, and include build.jl and a Makefile in deps/.
+
+  </script>
+  </section>
+  <section>
+      <h3>The JellyFish folder structure again</h3>
+      <div style="text-align: left; ">
+      <pre style="overflow: auto; font-size:16px">~
+├── julia
+├── .julia
+│   └── v0.3
+│       └── JellyFish
+│           ├── .git
+│           ├── .travis.yml
+│           ├── deps
+│           │   ├── build.jl
+│           │   ├── cjellyfish
+│           │   │   ├── damerau_levenshtein.c
+│           │   │   ├── hamming.c
+│           │   │   ├── jaro.c
+│           │   │   ├── jellyfish.h
+│           │   │   ├── ...
+│           │   ├── jellyfish.so
+│           │   └── Makefile
+│           ├── example.jl
+│           ├── LICENSE
+│           ├── README.md
+│           ├── REQUIRE
+│           ├── src
+│           │   └── JellyFish.jl
+│           └── test
+│               └── runtests.jl</div>
+      <br>
+  </section>
+
+  <section>
+  <h3>build.jl and Makefile</h3>
+  <div style="text-align: left">
+
+    <p><a href="https://github.com/samuelcolvin/JellyFish.jl/blob/master/deps/build.jl">build.jl</a></p>
+    <iframe width="1000" height="80"
+    src="http://codeshow.herokuapp.com/show/120/tango/https://github.com/samuelcolvin/JellyFish.jl/raw/master/deps/build.jl">
+    </iframe>
+  
+    <p><a href="https://github.com/samuelcolvin/JellyFish.jl/blob/master/deps/Makefile">Makefile</a></p>
+    <iframe width="1000" height="350"
+    src="http://codeshow.herokuapp.com/show/120/tango/https://github.com/samuelcolvin/JellyFish.jl/raw/master/deps/Makefile">
+    </iframe>
+  </div>
+  </section>
+
+</section>
+
 </div>
 
     </div>
@@ -391,7 +491,7 @@ To git@github.com:samuelcolvin/METADATA.jl.git
     <script>
 
       // Full list of configuration options available here:
-      // https://github.com/hakimel/reveal.js#configuration
+      // https://github.com/hakimel/reveal.js#configuration 
       Reveal.initialize({
         controls: true,
         progress: true,
