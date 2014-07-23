@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="description" content="Display Code">
+    <meta name="author" content="Samuel Colvin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>dataframes.jl</title>
+    
+    <style>
+    .code .hll { background-color: #ffffcc }
+.code  { background: #ffffff; }
+.code .c { color: #aaaaaa; font-style: italic } /* Comment */
+.code .err { color: #FF0000; background-color: #FFAAAA } /* Error */
+.code .k { color: #0000aa } /* Keyword */
+.code .cm { color: #aaaaaa; font-style: italic } /* Comment.Multiline */
+.code .cp { color: #4c8317 } /* Comment.Preproc */
+.code .c1 { color: #aaaaaa; font-style: italic } /* Comment.Single */
+.code .cs { color: #0000aa; font-style: italic } /* Comment.Special */
+.code .gd { color: #aa0000 } /* Generic.Deleted */
+.code .ge { font-style: italic } /* Generic.Emph */
+.code .gr { color: #aa0000 } /* Generic.Error */
+.code .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.code .gi { color: #00aa00 } /* Generic.Inserted */
+.code .go { color: #888888 } /* Generic.Output */
+.code .gp { color: #555555 } /* Generic.Prompt */
+.code .gs { font-weight: bold } /* Generic.Strong */
+.code .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.code .gt { color: #aa0000 } /* Generic.Traceback */
+.code .kc { color: #0000aa } /* Keyword.Constant */
+.code .kd { color: #0000aa } /* Keyword.Declaration */
+.code .kn { color: #0000aa } /* Keyword.Namespace */
+.code .kp { color: #0000aa } /* Keyword.Pseudo */
+.code .kr { color: #0000aa } /* Keyword.Reserved */
+.code .kt { color: #00aaaa } /* Keyword.Type */
+.code .m { color: #009999 } /* Literal.Number */
+.code .s { color: #aa5500 } /* Literal.String */
+.code .na { color: #1e90ff } /* Name.Attribute */
+.code .nb { color: #00aaaa } /* Name.Builtin */
+.code .nc { color: #00aa00; text-decoration: underline } /* Name.Class */
+.code .no { color: #aa0000 } /* Name.Constant */
+.code .nd { color: #888888 } /* Name.Decorator */
+.code .ni { color: #880000; font-weight: bold } /* Name.Entity */
+.code .nf { color: #00aa00 } /* Name.Function */
+.code .nn { color: #00aaaa; text-decoration: underline } /* Name.Namespace */
+.code .nt { color: #1e90ff; font-weight: bold } /* Name.Tag */
+.code .nv { color: #aa0000 } /* Name.Variable */
+.code .ow { color: #0000aa } /* Operator.Word */
+.code .w { color: #bbbbbb } /* Text.Whitespace */
+.code .mf { color: #009999 } /* Literal.Number.Float */
+.code .mh { color: #009999 } /* Literal.Number.Hex */
+.code .mi { color: #009999 } /* Literal.Number.Integer */
+.code .mo { color: #009999 } /* Literal.Number.Oct */
+.code .sb { color: #aa5500 } /* Literal.String.Backtick */
+.code .sc { color: #aa5500 } /* Literal.String.Char */
+.code .sd { color: #aa5500 } /* Literal.String.Doc */
+.code .s2 { color: #aa5500 } /* Literal.String.Double */
+.code .se { color: #aa5500 } /* Literal.String.Escape */
+.code .sh { color: #aa5500 } /* Literal.String.Heredoc */
+.code .si { color: #aa5500 } /* Literal.String.Interpol */
+.code .sx { color: #aa5500 } /* Literal.String.Other */
+.code .sr { color: #009999 } /* Literal.String.Regex */
+.code .s1 { color: #aa5500 } /* Literal.String.Single */
+.code .ss { color: #0000aa } /* Literal.String.Symbol */
+.code .bp { color: #00aaaa } /* Name.Builtin.Pseudo */
+.code .vc { color: #aa0000 } /* Name.Variable.Class */
+.code .vg { color: #aa0000 } /* Name.Variable.Global */
+.code .vi { color: #aa0000 } /* Name.Variable.Instance */
+.code .il { color: #009999 } /* Literal.Number.Integer.Long */
+    body {
+      margin: 0px;
+      font-size: 120%;
+    }
+
+    .linenodiv {
+      border-right: 1px solid #ddd;
+      padding-right: 3px;
+    }
+
+    .codetable {
+      position: absolute;
+      top: -16px;
+    }
+    .code .hll { 
+      background: transparent;
+    }
+    .code  { 
+      background: transparent;
+    }
+    </style>
+
+  </head>
+  <body>
+
+<table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</pre></div></td><td class="code"><div class="code"><pre><span class="k">using</span> <span class="n">DataFrames</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">show</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">println</span><span class="p">())</span>
+<span class="c"># TODO: needs more links to docs.</span>
+
+<span class="c"># A DataFrame is an in-memory database</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">A</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">,</span> <span class="nb">pi</span><span class="p">],</span> <span class="n">C</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;xx&quot;</span><span class="p">,</span> <span class="s">&quot;xy&quot;</span><span class="p">])</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c">#&gt; 2x3 DataFrame</span>
+<span class="c">#&gt; |-------|---|---------|------|</span>
+<span class="c">#&gt; | Row # | A | B       | C    |</span>
+<span class="c">#&gt; | 1     | 1 | 2.71828 | &quot;xx&quot; |</span>
+<span class="c">#&gt; | 2     | 2 | 3.14159 | &quot;xy&quot; |</span>
+
+<span class="c"># The columns of a DataFrame can be indexed using numbers or names</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="c">#&gt; [1,2]</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">A</span><span class="p">])</span>
+<span class="c">#&gt; [1,2]</span>
+
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="c">#&gt; [2.718281828459045,3.141592653589793]</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">B</span><span class="p">])</span>
+<span class="c">#&gt; [2.718281828459045,3.141592653589793]</span>
+
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="c">#&gt; ASCIIString[&quot;xx&quot;,&quot;xy&quot;]</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[:</span><span class="n">C</span><span class="p">])</span>
+<span class="c">#&gt; ASCIIString[&quot;xx&quot;,&quot;xy&quot;]</span>
+
+<span class="c"># The rows of a DataFrame can be indexed only by using numbers</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+<span class="c">#&gt; 1x3 DataFrame</span>
+<span class="c">#&gt; |-------|---|---------|------|</span>
+<span class="c">#&gt; | Row # | A | B       | C    |</span>
+<span class="c">#&gt; | 1     | 1 | 2.71828 | &quot;xx&quot; |</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:])</span>
+<span class="c">#&gt; 2x3 DataFrame</span>
+<span class="c">#&gt; |-------|---|---------|------|</span>
+<span class="c">#&gt; | Row # | A | B       | C    |</span>
+<span class="c">#&gt; | 1     | 1 | 2.71828 | &quot;xx&quot; |</span>
+<span class="c">#&gt; | 2     | 2 | 3.14159 | &quot;xy&quot; |</span>
+
+<span class="c"># DataFrames can be loaded from CSV files using readtable()</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">readtable</span><span class="p">(</span><span class="s">&quot;iris.csv&quot;</span><span class="p">)</span>
+
+<span class="c"># Check the names and element types of the columns of our new DataFrame</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">iris</span><span class="p">))</span>
+<span class="c">#&gt; [:SepalLength,:SepalWidth,:PetalLength,:PetalWidth,:Species]</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">eltypes</span><span class="p">(</span><span class="n">iris</span><span class="p">))</span>
+<span class="c">#&gt; Type[Float64,Float64,Float64,Float64,UTF8String]</span>
+
+<span class="c"># Subset the DataFrame to only include rows for one species</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="n">iris</span><span class="p">[:</span><span class="n">Species</span><span class="p">]</span> <span class="o">.==</span> <span class="s">&quot;setosa&quot;</span><span class="p">,</span> <span class="p">:])</span>
+<span class="c">#&gt; 50x5 DataFrame</span>
+<span class="c">#&gt; |-------|-------------|------------|-------------|------------|----------|</span>
+<span class="c">#&gt; | Row # | SepalLength | SepalWidth | PetalLength | PetalWidth | Species  |</span>
+<span class="c">#&gt; | 1     | 5.1         | 3.5        | 1.4         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 2     | 4.9         | 3.0        | 1.4         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 3     | 4.7         | 3.2        | 1.3         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 4     | 4.6         | 3.1        | 1.5         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 5     | 5.0         | 3.6        | 1.4         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 6     | 5.4         | 3.9        | 1.7         | 0.4        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 7     | 4.6         | 3.4        | 1.4         | 0.3        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 8     | 5.0         | 3.4        | 1.5         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 9     | 4.4         | 2.9        | 1.4         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; ⋮</span>
+<span class="c">#&gt; | 41    | 5.0         | 3.5        | 1.3         | 0.3        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 42    | 4.5         | 2.3        | 1.3         | 0.3        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 43    | 4.4         | 3.2        | 1.3         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 44    | 5.0         | 3.5        | 1.6         | 0.6        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 45    | 5.1         | 3.8        | 1.9         | 0.4        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 46    | 4.8         | 3.0        | 1.4         | 0.3        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 47    | 5.1         | 3.8        | 1.6         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 48    | 4.6         | 3.2        | 1.4         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 49    | 5.3         | 3.7        | 1.5         | 0.2        | &quot;setosa&quot; |</span>
+<span class="c">#&gt; | 50    | 5.0         | 3.3        | 1.4         | 0.2        | &quot;setosa&quot; |</span>
+
+<span class="c"># Count the number of rows for each species</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">by</span><span class="p">(</span><span class="n">iris</span><span class="p">,</span> <span class="p">:</span><span class="n">Species</span><span class="p">,</span> <span class="n">df</span> <span class="o">-&gt;</span> <span class="n">size</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="c">#&gt; 3x2 DataFrame</span>
+<span class="c">#&gt; |-------|--------------|----|</span>
+<span class="c">#&gt; | Row # | Species      | x1 |</span>
+<span class="c">#&gt; | 1     | &quot;setosa&quot;     | 50 |</span>
+<span class="c">#&gt; | 2     | &quot;versicolor&quot; | 50 |</span>
+<span class="c">#&gt; | 3     | &quot;virginica&quot;  | 50 |</span>
+
+<span class="c"># Discretize entire columns at a time</span>
+<span class="n">iris</span><span class="p">[:</span><span class="n">SepalLength</span><span class="p">]</span> <span class="o">=</span> <span class="n">iround</span><span class="p">(</span><span class="n">iris</span><span class="p">[:</span><span class="n">SepalLength</span><span class="p">])</span>
+<span class="n">iris</span><span class="p">[:</span><span class="n">SepalWidth</span><span class="p">]</span> <span class="o">=</span> <span class="n">iround</span><span class="p">(</span><span class="n">iris</span><span class="p">[:</span><span class="n">SepalWidth</span><span class="p">])</span>
+
+<span class="c"># Tabulate data according to discretized columns to see &quot;clusters&quot;</span>
+<span class="n">tabulated</span> <span class="o">=</span> <span class="n">by</span><span class="p">(</span>
+    <span class="n">iris</span><span class="p">,</span>
+    <span class="p">[:</span><span class="n">Species</span><span class="p">,</span> <span class="p">:</span><span class="n">SepalLength</span><span class="p">,</span> <span class="p">:</span><span class="n">SepalWidth</span><span class="p">],</span>
+    <span class="n">df</span> <span class="o">-&gt;</span> <span class="n">size</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">showln</span><span class="p">(</span><span class="n">tabulated</span><span class="p">)</span>
+<span class="c">#&gt; 17x4 DataFrame</span>
+<span class="c">#&gt; |-------|--------------|-------------|------------|----|</span>
+<span class="c">#&gt; | Row # | Species      | SepalLength | SepalWidth | x1 |</span>
+<span class="c">#&gt; | 1     | &quot;setosa&quot;     | 4           | 3          | 4  |</span>
+<span class="c">#&gt; | 2     | &quot;setosa&quot;     | 5           | 2          | 1  |</span>
+<span class="c">#&gt; | 3     | &quot;setosa&quot;     | 5           | 3          | 23 |</span>
+<span class="c">#&gt; | 4     | &quot;setosa&quot;     | 5           | 4          | 17 |</span>
+<span class="c">#&gt; | 5     | &quot;setosa&quot;     | 6           | 4          | 5  |</span>
+<span class="c">#&gt; | 6     | &quot;versicolor&quot; | 5           | 2          | 3  |</span>
+<span class="c">#&gt; | 7     | &quot;versicolor&quot; | 5           | 3          | 3  |</span>
+<span class="c">#&gt; | 8     | &quot;versicolor&quot; | 6           | 2          | 6  |</span>
+<span class="c">#&gt; | 9     | &quot;versicolor&quot; | 6           | 3          | 29 |</span>
+<span class="c">#&gt; | 10    | &quot;versicolor&quot; | 7           | 3          | 9  |</span>
+<span class="c">#&gt; | 11    | &quot;virginica&quot;  | 5           | 3          | 1  |</span>
+<span class="c">#&gt; | 12    | &quot;virginica&quot;  | 6           | 2          | 1  |</span>
+<span class="c">#&gt; | 13    | &quot;virginica&quot;  | 6           | 3          | 22 |</span>
+<span class="c">#&gt; | 14    | &quot;virginica&quot;  | 7           | 3          | 19 |</span>
+<span class="c">#&gt; | 15    | &quot;virginica&quot;  | 7           | 4          | 1  |</span>
+<span class="c">#&gt; | 16    | &quot;virginica&quot;  | 8           | 3          | 4  |</span>
+<span class="c">#&gt; | 17    | &quot;virginica&quot;  | 8           | 4          | 2  |</span>
+</pre></div>
+</td></tr></table>
+
+  </body>
+</html>

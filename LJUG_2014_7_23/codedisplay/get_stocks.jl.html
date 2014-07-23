@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="description" content="Display Code">
+    <meta name="author" content="Samuel Colvin">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>get_stocks.jl</title>
+    
+    <style>
+    .code .hll { background-color: #ffffcc }
+.code  { background: #ffffff; }
+.code .c { color: #aaaaaa; font-style: italic } /* Comment */
+.code .err { color: #FF0000; background-color: #FFAAAA } /* Error */
+.code .k { color: #0000aa } /* Keyword */
+.code .cm { color: #aaaaaa; font-style: italic } /* Comment.Multiline */
+.code .cp { color: #4c8317 } /* Comment.Preproc */
+.code .c1 { color: #aaaaaa; font-style: italic } /* Comment.Single */
+.code .cs { color: #0000aa; font-style: italic } /* Comment.Special */
+.code .gd { color: #aa0000 } /* Generic.Deleted */
+.code .ge { font-style: italic } /* Generic.Emph */
+.code .gr { color: #aa0000 } /* Generic.Error */
+.code .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.code .gi { color: #00aa00 } /* Generic.Inserted */
+.code .go { color: #888888 } /* Generic.Output */
+.code .gp { color: #555555 } /* Generic.Prompt */
+.code .gs { font-weight: bold } /* Generic.Strong */
+.code .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.code .gt { color: #aa0000 } /* Generic.Traceback */
+.code .kc { color: #0000aa } /* Keyword.Constant */
+.code .kd { color: #0000aa } /* Keyword.Declaration */
+.code .kn { color: #0000aa } /* Keyword.Namespace */
+.code .kp { color: #0000aa } /* Keyword.Pseudo */
+.code .kr { color: #0000aa } /* Keyword.Reserved */
+.code .kt { color: #00aaaa } /* Keyword.Type */
+.code .m { color: #009999 } /* Literal.Number */
+.code .s { color: #aa5500 } /* Literal.String */
+.code .na { color: #1e90ff } /* Name.Attribute */
+.code .nb { color: #00aaaa } /* Name.Builtin */
+.code .nc { color: #00aa00; text-decoration: underline } /* Name.Class */
+.code .no { color: #aa0000 } /* Name.Constant */
+.code .nd { color: #888888 } /* Name.Decorator */
+.code .ni { color: #880000; font-weight: bold } /* Name.Entity */
+.code .nf { color: #00aa00 } /* Name.Function */
+.code .nn { color: #00aaaa; text-decoration: underline } /* Name.Namespace */
+.code .nt { color: #1e90ff; font-weight: bold } /* Name.Tag */
+.code .nv { color: #aa0000 } /* Name.Variable */
+.code .ow { color: #0000aa } /* Operator.Word */
+.code .w { color: #bbbbbb } /* Text.Whitespace */
+.code .mf { color: #009999 } /* Literal.Number.Float */
+.code .mh { color: #009999 } /* Literal.Number.Hex */
+.code .mi { color: #009999 } /* Literal.Number.Integer */
+.code .mo { color: #009999 } /* Literal.Number.Oct */
+.code .sb { color: #aa5500 } /* Literal.String.Backtick */
+.code .sc { color: #aa5500 } /* Literal.String.Char */
+.code .sd { color: #aa5500 } /* Literal.String.Doc */
+.code .s2 { color: #aa5500 } /* Literal.String.Double */
+.code .se { color: #aa5500 } /* Literal.String.Escape */
+.code .sh { color: #aa5500 } /* Literal.String.Heredoc */
+.code .si { color: #aa5500 } /* Literal.String.Interpol */
+.code .sx { color: #aa5500 } /* Literal.String.Other */
+.code .sr { color: #009999 } /* Literal.String.Regex */
+.code .s1 { color: #aa5500 } /* Literal.String.Single */
+.code .ss { color: #0000aa } /* Literal.String.Symbol */
+.code .bp { color: #00aaaa } /* Name.Builtin.Pseudo */
+.code .vc { color: #aa0000 } /* Name.Variable.Class */
+.code .vg { color: #aa0000 } /* Name.Variable.Global */
+.code .vi { color: #aa0000 } /* Name.Variable.Instance */
+.code .il { color: #009999 } /* Literal.Number.Integer.Long */
+    body {
+      margin: 0px;
+      font-size: 120%;
+    }
+
+    .linenodiv {
+      border-right: 1px solid #ddd;
+      padding-right: 3px;
+    }
+
+    .codetable {
+      position: absolute;
+      top: -16px;
+    }
+    .code .hll { 
+      background: transparent;
+    }
+    .code  { 
+      background: transparent;
+    }
+    </style>
+
+  </head>
+  <body>
+
+<table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="code"><pre><span class="k">using</span> <span class="n">DataFrames</span>
+<span class="k">using</span> <span class="n">Requests</span>
+<span class="k">using</span> <span class="n">HDF5</span><span class="p">,</span> <span class="n">JLD</span>
+
+<span class="k">function</span><span class="nf"> quandl</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">market</span> <span class="o">=</span> <span class="p">:</span><span class="n">NASDAQ</span><span class="p">)</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://www.quandl.com/api/v1/datasets/GOOG/</span><span class="si">$(market)</span><span class="s">_</span><span class="si">$</span><span class="s">code.csv?sort_order=asc&quot;</span>
+  <span class="n">url</span> <span class="o">*=</span> <span class="s">&quot;&amp;trim_start=2012-06-01&amp;trim_end=2014-06-01&amp;auth_token=6YzXnhcc8KU6zC9Y8oqh&quot;</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">200</span>
+    <span class="nb">error</span><span class="p">(</span><span class="s">&quot;error getting data</span><span class="se">\n</span><span class="s">    url: </span><span class="si">$</span><span class="s">url</span><span class="se">\n</span><span class="s">     response: </span><span class="si">$</span><span class="s">(response.data)&quot;</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="n">println</span><span class="p">(</span><span class="s">&quot;got url: </span><span class="si">$</span><span class="s">url</span><span class="se">\n</span><span class="s">response length: </span><span class="si">$</span><span class="s">(length(response.data))&quot;</span><span class="p">)</span>
+  <span class="n">readtable</span><span class="p">(</span><span class="n">IOBuffer</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="k">end</span>
+<span class="n">stockdata</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">{</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">}()</span>
+<span class="k">for</span> <span class="n">code</span> <span class="k">in</span> <span class="p">[:</span><span class="n">AAPL</span><span class="p">,</span> <span class="p">:</span><span class="n">GOOG</span><span class="p">,</span> <span class="p">:</span><span class="n">FB</span><span class="p">,</span> <span class="p">:</span><span class="n">MSFT</span><span class="p">]</span>
+  <span class="n">df</span> <span class="o">=</span> <span class="n">quandl</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+  <span class="n">show</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+  <span class="n">println</span><span class="p">()</span>
+  <span class="n">stockdata</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+<span class="k">end</span>
+<span class="p">@</span><span class="n">save</span> <span class="s">&quot;stock_data.jld&quot;</span> <span class="n">stockdata</span>
+</pre></div>
+</td></tr></table>
+
+  </body>
+</html>

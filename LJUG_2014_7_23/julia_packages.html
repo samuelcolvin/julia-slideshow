@@ -261,8 +261,9 @@ samuel:TestPac || tree -a
   </section>
 
   <section>
-      <h3>Create the <a href="https://github.com/samuelcolvin/TestPac.jl">Rep in Github</a></h3>
+      <h3>Create the Repo in Github</h3>
       <div>
+      <a href="https://github.com/samuelcolvin/TestPac.jl">github.com/samuelcolvin/TestPac.jl</a>
       <img src="github_create.png" style="height: 500px;">
       </div>
       <br>
@@ -302,7 +303,7 @@ Branch master set up to track remote branch master from origin.</pre>
   <section>
       <h3>Using the Package</h3>
       <div style="text-align: left; ">
-      <p>From any directory, we can use the new Package.</p>
+      <p>From any directory, we can use the new package.</p>
       <pre>samuel:demo || julia
                _
    _       _ _(_)_     |  A fresh approach to technical computing
@@ -340,9 +341,9 @@ julia> hello(:Samuel)
   </section>
 
   <section>
-      <h3>Register TestPac</h3>
+      <h3>Register &amp; Tag TestPac</h3>
       <div style="text-align: left; ">
-      <pre>julia> Pkg.register("TestPac")
+      <pre style="height: 350px; overflow: auto; font-size:16px">julia> Pkg.register("TestPac")
 INFO: Registering TestPac at git://github.com/samuelcolvin/TestPac.jl.git
 INFO: Committing METADATA for TestPac
 julia> Pkg.tag("TestPac")
@@ -350,15 +351,26 @@ INFO: Tagging TestPac v0.0.1
 INFO: Committing METADATA for TestPac
 
 samuel:demo || cd ~/.julia/v0.3/METADATA/
+
 samuel:METADATA || gs
 On branch metadata-v2
 Your branch is ahead of 'origin/metadata-v2' by 2 commit.
   (use "git push" to publish your local commits)
 
 nothing to commit, working directory clean
-samuel:METADATA || git remote -v
-origin  git@github.com:JuliaLang/METADATA.jl.git (fetch)
-origin  git@github.com:JuliaLang/METADATA.jl.git (push)</pre>
+
+samuel:METADATA || git log
+commit 09f227a5c679028aa2781499f3f5c8a81cf2f995
+Author: Samuel Colvin <s@muelcolvin.com>
+Date:   Wed Jul 23 13:56:21 2014 +0100
+
+    Tag TestPac v0.0.1
+
+commit af9e402944541fd68b755a2e7880c685b79b7210
+Author: Samuel Colvin <s@muelcolvin.com>
+Date:   Wed Jul 23 13:55:03 2014 +0100
+
+    Register TestPac</pre>
       </div>
       <br>
   </section>
@@ -366,8 +378,19 @@ origin  git@github.com:JuliaLang/METADATA.jl.git (push)</pre>
   <section>
       <h3>Fork METADATA and add as a new remote</h3>
       <img src="fork.png">
-      <p>Fork METADATA in github and add the fork as a remote to the METADATA.</p>
-      <pre>samuel:METADATA || git remote add myfork git@github.com:samuelcolvin/METADATA.jl.git
+      <p style="font-size:20px">Fork METADATA in github and add the fork as a remote to METADATA.</p>
+      <pre style="height: 350px; overflow: auto; font-size:16px">samuel:METADATA || git remote -v
+origin  git@github.com:JuliaLang/METADATA.jl.git (fetch)
+origin  git@github.com:JuliaLang/METADATA.jl.git (push)
+
+samuel:METADATA || git remote add myfork git@github.com:samuelcolvin/METADATA.jl.git
+
+samuel:METADATA || git remote -v
+myfork  git@github.com:samuelcolvin/METADATA.jl.git (fetch)
+myfork  git@github.com:samuelcolvin/METADATA.jl.git (push)
+origin  git@github.com:JuliaLang/METADATA.jl.git (fetch)
+origin  git@github.com:JuliaLang/METADATA.jl.git (push)
+
 samuel:METADATA || git push myfork metadata-v2
 Counting objects: 6, done.
 Delta compression using up to 8 threads.
@@ -404,7 +427,7 @@ To git@github.com:samuelcolvin/METADATA.jl.git
   </section>
 
   <section>
-  <h3>JellyFish Python</h3>
+  <h3>JellyFish in Python</h3>
   <div style="text-align: left; ">
   <p><a href="https://github.com/sunlightlabs/jellyfish">https://github.com/sunlightlabs/jellyfish</a>
   <p>The guts of JellyFish are written in c, however the python module requires 414 lines of "pythonish" c (and a header file) to allow the module to be imported in to python.</p>
@@ -479,6 +502,18 @@ To git@github.com:samuelcolvin/METADATA.jl.git
   </div>
   </section>
 
+</section>
+
+<section data-markdown>
+<script type="text/template">
+# Questions?
+
+Useful Links
+
+* **Package Listing:** http://iainnz.github.io/packages.julialang.org/
+* **Julia Glossary:** https://julia.readthedocs.org/en/latest/genindex/
+* **JuliaByExample:** http://www.scolvin.com/juliabyexample
+</script>
 </section>
 
 </div>
