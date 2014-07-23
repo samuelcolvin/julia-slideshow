@@ -69,6 +69,9 @@
 * Julia comes with a build in package manager which is accessed from inside Julia.
 * Currently 377 packages available.
 * Julia very popular with the optimisation crowd: lots of mature packages in that area.
+* Listing of Packages is currently a slight mess, the uptodate list is hard to find, its currently at:
+
+#### http://iainnz.github.io/packages.julialang.org/
 
 </script>
 </section>
@@ -98,24 +101,283 @@
 
 <section data-markdown>
 <script type="text/template">
-## Most Notable
+## Notable
 
 * **HDF5:** support of reading and writing HDF5 files, comes with a "jld" file format for persistence of julia objects.
 * **Requests:** simple but effective library for making http requests.
 * **TextPlots:** simple plotting inside the terminal.
 
+`<plug>`
+
+* **[Bokeh](https://github.com/samuelcolvin/Bokeh.jl):** Julia bindings for the HTML5 plotting library.
+* **[JellyFish](https://github.com/samuelcolvin/JellyFish.jl):** Port of the Python string comparison libary written in c.
+* ** [JuliaByExample](http://www.scolvin.com/juliabyexample):** not a libary but hopefully some helpful examples.
+
+`</plug>`
+
 </script>
 </section>
 
 <section>
+    <section>
+    <h3>DataFrames - Simple Usage</h3>
+      <div>
+          <iframe width="1000" height="500"
+          src="http://codeshow.herokuapp.com/show/120/autumn/https://github.com/samuelcolvin/JuliaByExample/raw/master/common_usage/dataframes.jl">
+      </iframe>
+      </div>
+    </section>
 
-<h2>DataFrames - Simple Usage</h2>
-  <div>
-      <iframe width="1000" height="400"
-      src="http://codeshow.herokuapp.com/show/120/autumn/https://github.com/samuelcolvin/JuliaByExample/raw/master/common_usage/dataframes.jl">
-  </iframe>
-  </div>
+    <section>
+    <h3>DataFrames &amp; Requests</h3>
+      <div>
+          <iframe width="1000" height="500"
+          src="http://codeshow.herokuapp.com/show/120/autumn/https://github.com/samuelcolvin/julia-slideshow/raw/master/LJUG_2014_7_23/demo/get_stocks.jl">
+      </iframe>
+      </div>
+    </section>
+
+    <section>
+    <h3>DataFrames &amp; Bokeh</h3>
+      <div>
+          <iframe width="1000" height="500"
+          src="http://codeshow.herokuapp.com/show/120/autumn/https://github.com/samuelcolvin/julia-slideshow/raw/master/LJUG_2014_7_23/demo/stocks.jl">
+      </iframe>
+      </div>
+    </section>
+
+    <section>
+    <h3>DataFrames &amp; Bokeh</h3>
+      <div>
+          <iframe width="900" height="550"
+          src="demo/bokeh_plot.html">
+      </iframe>
+      <p>AAPL: blue, GOOG: red, FB: green, MSFT: black</p>
+      </div>
+    </section>
 </section>
+
+<section>
+  <section data-markdown>
+    <script type="text/template">
+## Creating Packages
+
+* Process is well document [in the manual](http://julia.readthedocs.org/en/latest/manual/packages/#package-development).
+* The basic worflow is:
+  * Make sure git is configured correctly (eg. user.name and github.user)
+  * Automatically generate the package structure.
+  * Add it to Github
+  * Write the package.
+  * register the package in METADATA.
+  * if you have permission to push to METADATA:
+    * push to METADATA.
+  * else (and this isnt so well documented):
+    *  fork METADATA
+    * add the remote to your METADATA pack
+    * push to that remote
+    * create a pull request
+
+
+    </script>
+  </section>
+  <section>
+      <h3>First a note on directory structure</h3>
+      <div style="text-align: left; ">
+      <pre style="height:600px; overflow: auto; font-size:16px">~
+├── julia
+│   ├── base
+│   ├── contrib
+....
+├── .julia
+│   └── v0.3
+│       ├── ArgParse
+│       ├── ArrayViews
+│       ├── BinDeps
+│       ├── Bokeh
+│       ├── Cairo
+│       ├── Calculus
+│       ├── Calendar
+│       ├── Cartesian
+│       ├── Cbc
+...
+│       ├── METADATA
+...
+│       └── JellyFish
+│           ├── deps
+│           ├── .git
+│           ├── .travis.yml
+│           │   ├── build.jl
+│           │   ├── cjellyfish
+│           │   │   ├── damerau_levenshtein.c
+│           │   │   ├── hamming.c
+│           │   │   ├── jaro.c
+│           │   │   ├── jellyfish.h
+│           │   │   ├── ...
+│           │   ├── jellyfish.so
+│           │   └── Makefile
+│           ├── example.jl
+│           ├── LICENSE
+│           ├── README.md
+│           ├── REQUIRE
+│           ├── src
+│           │   └── JellyFish.jl
+│           └── test
+│               └── runtests.jl</div>
+      <br>
+  </section>
+
+  <section>
+      <h3>Generate the Package</h3>
+      <div style="text-align: left; ">
+      <pre>julia> Pkg.generate("TestPac", "MIT")
+INFO: Initializing TestPac repo: /home/samuel/.julia/v0.3/TestPac
+INFO: Origin: git://github.com/samuelcolvin/TestPac.jl.git
+INFO: Generating LICENSE.md
+INFO: Generating README.md
+INFO: Generating src/TestPac.jl
+INFO: Generating test/runtests.jl
+INFO: Generating .travis.yml
+INFO: Committing TestPac generated files
+
+julia> exit()
+samuel:demo || cd /home/samuel/.julia/v0.3/TestPac
+samuel:TestPac || tree -a
+.
+├── .git
+├── LICENSE.md
+├── README.md
+├── src
+│   └── TestPac.jl
+├── test
+│   └── runtests.jl
+└── .travis.yml</pre>
+</div>
+      <br>
+  </section>
+
+  <section>
+      <h3>Create the <a href="https://github.com/samuelcolvin/TestPac.jl">Rep in Github</a></h3>
+      <div>
+      <img src="github_create.png" style="height: 500px;">
+      </div>
+      <br>
+  </section>
+
+  <section>
+      <h3>Add remote and Push</h3>
+      <div style="text-align: left; ">
+      <pre>samuel:TestPac || git remote set-url origin git@github.com:samuelcolvin/TestPac.jl.git
+samuel:TestPac || git push --set-upstream origin master
+Counting objects: 11, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (11/11), 1.85 KiB | 0 bytes/s, done.
+Total 11 (delta 0), reused 0 (delta 0)
+To git@github.com:samuelcolvin/TestPac.jl.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.</pre>
+      </div>
+      <p>This is a good point to setup TravisCI, just click on the svg in README.md in GitHub.</p>
+      <br>
+  </section>
+
+  <section>
+  <h3>Write some code</h3>
+    <div style="text-align: left; ">
+      <p>Initial <code>/src/TestPac.jl</code>:</p>
+      <iframe width="800" height="120"
+      src="http://codeshow.herokuapp.com/show/120/autumn/https://github.com/samuelcolvin/TestPac.jl/raw/554efee7ddbd3415f767f0cf11f5836a7bddc3be/src/TestPac.jl">
+      </iframe>
+      <p>With some code:</p>
+      <iframe width="800" height="200"
+      src="http://codeshow.herokuapp.com/show/120/tango/https://github.com/samuelcolvin/TestPac.jl/raw/master/src/TestPac.jl">
+      </iframe>
+    </div>
+  </section>
+
+  <section>
+      <h3>Using the Package</h3>
+      <div style="text-align: left; ">
+      <p>From any directory, we can use the new Package.</p>
+      <pre>samuel:demo || julia
+               _
+   _       _ _(_)_     |  A fresh approach to technical computing
+  (_)     | (_) (_)    |  Documentation: http://docs.julialang.org
+   _ _   _| |_  __ _   |  Type "help()" to list help topics
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 0.3.0-rc1+136 (2014-07-22 23:47 UTC)
+ _/ |\__'_|_|_|\__'_|  |  Commit 24b2363* (0 days old master)
+|__/                   |  x86_64-linux-gnu
+
+julia> using TestPac
+
+julia> hello(:Samuel)
+"hello Samuel"</pre>
+      <p>Others can install it with</p>
+      <pre>julia> Pkg.clone("git@github.com:samuelcolvin/TestPac.jl.git")</pre>
+      </div>
+      <br>
+  </section>
+
+  <section>
+      <h3>Check package status</h3>
+      <div style="text-align: left; ">
+      <pre>julia> Pkg.status()
+29 required packages:
+ - ArgParse                      0.2.8
+...
+ - StatsBase                     0.6.3
+ - TestPac                       0.0.0-             master (unregistered)
+ - TexExtensions                 0.0.1
+ - TextPlots                     0.1.0+             master
+...</pre>
+      </div>
+      <br>
+  </section>
+
+  <section>
+      <h3>Register TestPac</h3>
+      <div style="text-align: left; ">
+      <pre>julia> Pkg.register("TestPac")
+INFO: Registering TestPac at git://github.com/samuelcolvin/TestPac.jl.git
+INFO: Committing METADATA for TestPac
+julia> Pkg.tag("TestPac")
+INFO: Tagging TestPac v0.0.1
+INFO: Committing METADATA for TestPac
+
+samuel:demo || cd ~/.julia/v0.3/METADATA/
+samuel:METADATA || gs
+On branch metadata-v2
+Your branch is ahead of 'origin/metadata-v2' by 2 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working directory clean
+samuel:METADATA || git remote -v
+origin  git@github.com:JuliaLang/METADATA.jl.git (fetch)
+origin  git@github.com:JuliaLang/METADATA.jl.git (push)</pre>
+      </div>
+      <br>
+  </section>
+
+  <section>
+      <h3>Fork METADATA and add as a new remote</h3>
+      <img src="fork.png">
+      <p>Fork METADATA in github and add the fork as a remote to the METADATA.</p>
+      <pre>samuel:METADATA || git remote add myfork git@github.com:samuelcolvin/METADATA.jl.git
+samuel:METADATA || git push myfork metadata-v2
+Counting objects: 6, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (6/6), 464 bytes | 0 bytes/s, done.
+Total 6 (delta 1), reused 0 (delta 0)
+To git@github.com:samuelcolvin/METADATA.jl.git
+   af9e402..09f227a  metadata-v2 -> metadata-v2</pre>
+  </section>
+
+  <section>
+      <h3>Submit the Pull Request</h3>
+      <img src="pull_request.png">
+  </section>
 
 </section>
 
@@ -140,8 +402,8 @@
         transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
 
         // Parallax scrolling
-        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-        // parallaxBackgroundSize: '2100px 900px',
+        // parallaxBackgroundImage: 'background.jpg',
+        // parallaxBackgroundSize: '2400px 1600px',
 
         // Optional libraries used to extend on reveal.js
         dependencies: [

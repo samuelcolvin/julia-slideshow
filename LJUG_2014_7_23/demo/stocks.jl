@@ -15,4 +15,7 @@ println(eltypes(df))
 
 mat = [df[:AAPL] df[:GOOG] df[:FB] df[:MSFT]]
 
-plot(df[:days], mat; title="stocks")
+plot(df[:days], mat; title="stocks", height = 400)
+
+println(Bokeh.DEFAULT_GLYPHS_STR)
+println([:AAPL, :GOOG, :FB, :MSFT])
